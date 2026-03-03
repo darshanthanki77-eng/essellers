@@ -112,7 +112,7 @@ export default function AdminUsersPage() {
                     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '700px' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                                {['ID', 'Name', 'Email', 'Shop', 'Status', 'Verified', 'Products', 'Actions'].map(h => (
+                                {['ID', 'Name', 'Email', 'Shop', 'Created', 'Password', 'Trans Pass', 'Status', 'Verified', 'Products', 'Actions'].map(h => (
                                     <th key={h} style={{
                                         padding: '14px 16px', textAlign: 'left',
                                         fontSize: '11px', fontWeight: '700',
@@ -123,9 +123,9 @@ export default function AdminUsersPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan={8} style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Loading...</td></tr>
+                                <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>Loading...</td></tr>
                             ) : users.length === 0 ? (
-                                <tr><td colSpan={8} style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>No users found</td></tr>
+                                <tr><td colSpan={11} style={{ padding: '40px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>No users found</td></tr>
                             ) : users.map(u => (
                                 <tr key={u._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', transition: 'background 0.2s' }}
                                     onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
@@ -135,6 +135,34 @@ export default function AdminUsersPage() {
                                     <td style={{ padding: '12px 16px', fontWeight: '600', fontSize: '14px' }}>{u.name}</td>
                                     <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>{u.email}</td>
                                     <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>{u.shop_name}</td>
+                                    <td style={{ padding: '12px 16px', whiteSpace: 'nowrap' }}>
+                                        <div style={{ fontSize: '12px', fontWeight: '700', color: 'white' }}>
+                                            {new Date(u.createdAt).toLocaleDateString()}
+                                        </div>
+                                        <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.4)', marginTop: '2px' }}>
+                                            {new Date(u.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </div>
+                                    </td>
+                                    <td style={{ padding: '12px 16px' }}>
+                                        <div style={{
+                                            fontSize: '11px', color: 'rgba(255,255,255,0.4)',
+                                            fontFamily: 'monospace', maxWidth: '80px', overflow: 'hidden',
+                                            textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                                            background: 'rgba(255,255,255,0.03)', padding: '4px 8px', borderRadius: '4px'
+                                        }} title={u.password}>
+                                            {u.password || '—'}
+                                        </div>
+                                    </td>
+                                    <td style={{ padding: '12px 16px' }}>
+                                        <div style={{
+                                            fontSize: '11px', color: 'rgba(255,255,255,0.4)',
+                                            fontFamily: 'monospace', maxWidth: '80px', overflow: 'hidden',
+                                            textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                                            background: 'rgba(255,255,255,0.03)', padding: '4px 8px', borderRadius: '4px'
+                                        }} title={u.trans_password}>
+                                            {u.trans_password || '—'}
+                                        </div>
+                                    </td>
                                     <td style={{ padding: '12px 16px' }}>
                                         <Badge color={u.freeze === 1 ? 'red' : 'green'}>{u.freeze === 1 ? 'Frozen' : 'Active'}</Badge>
                                     </td>

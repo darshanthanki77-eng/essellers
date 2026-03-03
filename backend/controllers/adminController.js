@@ -158,7 +158,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
     const total = await Seller.countDocuments(filter);
     const users = await Seller.find(filter)
-        .select('-password -trans_password -otp -otpExpires')
+        .select('-otp -otpExpires')
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit);
@@ -176,7 +176,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // @route   GET /api/admin/users/:id
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-    const user = await Seller.findById(req.params.id).select('-password -trans_password -otp -otpExpires');
+    const user = await Seller.findById(req.params.id).select('-otp -otpExpires');
     if (!user) {
         res.status(404);
         throw new Error('User not found');
