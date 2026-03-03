@@ -32,6 +32,7 @@ export default function AdminOrdersPage() {
     const [loading, setLoading] = useState(true);
     const [editModal, setEditModal] = useState<any>(null);
     const [editStatus, setEditStatus] = useState('');
+    const [editPickUpStatus, setEditPickUpStatus] = useState('');
     const [actionLoading, setActionLoading] = useState<string | null>(null);
 
     // Add Order Modal state
@@ -173,7 +174,7 @@ export default function AdminOrdersPage() {
         await fetch(`${API}/admin/orders/${editModal._id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
-            body: JSON.stringify({ status: editStatus })
+            body: JSON.stringify({ status: editStatus, pick_up_status: editPickUpStatus })
         });
         setEditModal(null);
         await fetchOrders();
@@ -284,7 +285,7 @@ export default function AdminOrdersPage() {
                     <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '900px' }}>
                         <thead>
                             <tr style={{ background: 'rgba(99,102,241,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                                {['Order Code', 'Customer', 'Seller / Shop', 'Total', 'Cost', 'Status', 'Payment', 'Date', 'Actions'].map(h => (
+                                {['Order Code', 'Customer', 'Seller / Shop', 'Total', 'Cost', 'Status', 'Pick up', 'Payment', 'Date', 'Actions'].map(h => (
                                     <th key={h} style={{
                                         padding: '13px 14px', textAlign: 'left', fontSize: '10px',
                                         fontWeight: '700', color: 'rgba(255,255,255,0.4)',
@@ -295,11 +296,11 @@ export default function AdminOrdersPage() {
                         </thead>
                         <tbody>
                             {loading ? (
-                                <tr><td colSpan={9} style={{ padding: '60px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
+                                <tr><td colSpan={10} style={{ padding: '60px', textAlign: 'center', color: 'rgba(255,255,255,0.3)' }}>
                                     <Loader2 size={24} style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }} />
                                 </td></tr>
                             ) : orders.length === 0 ? (
-                                <tr><td colSpan={9} style={{ padding: '60px', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>No orders found</td></tr>
+                                <tr><td colSpan={10} style={{ padding: '60px', textAlign: 'center', color: 'rgba(255,255,255,0.3)', fontSize: '14px' }}>No orders found</td></tr>
                             ) : orders.map(o => {
                                 const sc = STATUS_COLORS[o.status] || STATUS_COLORS.pending;
                                 return (
@@ -334,6 +335,15 @@ export default function AdminOrdersPage() {
                                         </td>
                                         <td style={{ padding: '13px 14px' }}>
                                             <span style={{
+                                                padding: '4px 12px', borderRadius: '20px', fontSize: '10px', fontWeight: '800',
+                                                background: o.pick_up_status === 'Picked-Up' ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.08)',
+                                                border: o.pick_up_status === 'Picked-Up' ? '1px solid #000' : '1px solid rgba(255,255,255,0.15)',
+                                                color: o.pick_up_status === 'Picked-Up' ? '#fff' : 'rgba(255,255,255,0.6)',
+                                                textTransform: 'uppercase', whiteSpace: 'nowrap', letterSpacing: '0.02em'
+                                            }}>{o.pick_up_status || 'Unpicked-Up'}</span>
+                                        </td>
+                                        <td style={{ padding: '13px 14px' }}>
+                                            <span style={{
                                                 padding: '4px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700',
                                                 background: o.payment_status === 'paid' ? 'rgba(16,185,129,0.12)' : 'rgba(251,191,36,0.12)',
                                                 color: o.payment_status === 'paid' ? '#10b981' : '#fbbf24',
@@ -345,7 +355,7 @@ export default function AdminOrdersPage() {
                                         </td>
                                         <td style={{ padding: '13px 14px' }}>
                                             <div style={{ display: 'flex', gap: '6px' }}>
-                                                <button onClick={() => { setEditModal(o); setEditStatus(o.status); }} style={{
+                                                <button onClick={() => { setEditModal(o); setEditStatus(o.status); setEditPickUpStatus(o.pick_up_status || 'Unpicked-Up'); }} style={{
                                                     background: 'rgba(99,102,241,0.15)', border: '1px solid rgba(99,102,241,0.3)',
                                                     borderRadius: '8px', padding: '7px 9px', cursor: 'pointer', color: '#818cf8', display: 'flex'
                                                 }}><Edit2 size={13} /></button>
@@ -623,6 +633,7 @@ export default function AdminOrdersPage() {
                     }}>
                         <h3 style={{ margin: '0 0 6px', color: 'white', fontSize: '18px', fontWeight: '800' }}>Update Order Status</h3>
                         <p style={{ margin: '0 0 20px', color: '#a5b4fc', fontSize: '12px', fontFamily: 'monospace', fontWeight: '600' }}>{editModal.order_code}</p>
+                        <label style={{ ...labelStyle, marginTop: '20px' }}>Order Status</label>
                         <select
                             value={editStatus}
                             onChange={e => setEditStatus(e.target.value)}
@@ -632,6 +643,17 @@ export default function AdminOrdersPage() {
                                 <option key={s} value={s} style={{ background: '#1e1b4b', textTransform: 'capitalize' }}>{s}</option>
                             ))}
                         </select>
+
+                        <label style={labelStyle}>Pick up Status</label>
+                        <select
+                            value={editPickUpStatus}
+                            onChange={e => setEditPickUpStatus(e.target.value)}
+                            style={{ ...inputStyle, marginBottom: '24px', cursor: 'pointer' }}
+                        >
+                            <option value="Unpicked-Up" style={{ background: '#1e1b4b' }}>Unpicked-Up</option>
+                            <option value="Picked-Up" style={{ background: '#1e1b4b' }}>Picked-Up</option>
+                        </select>
+
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <button onClick={() => setEditModal(null)} style={{
                                 flex: 1, padding: '12px', background: 'rgba(255,255,255,0.07)',
