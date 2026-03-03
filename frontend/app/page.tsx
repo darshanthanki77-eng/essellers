@@ -10,7 +10,7 @@ import {
 } from '@/components/dashboard/MetricCard';
 import SalesChart from '@/components/dashboard/SalesChart';
 import FeaturedProductsCarousel from '@/components/products/FeaturedProductsCarousel';
-import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Gem, ArrowRight } from 'lucide-react';
+import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Globe, CheckCircle2, Heart, Eye, Gem, Shield, Clock, ArrowRight } from 'lucide-react';
 import Shell from '@/components/layout/Shell';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
@@ -139,84 +139,63 @@ export default function DashboardPage() {
                             </div>
                         </div>
 
-                        {/* Compact Plan Card */}
-                        <div className="relative animate-float-premium shrink-0" style={{ width: '270px' }}>
-                            <div className="relative overflow-hidden rounded-[1.6rem] rotate-2 hover:rotate-0 transition-all duration-700 shadow-[0_25px_60px_rgba(0,0,0,0.25)]" style={{ background: 'linear-gradient(135deg, #6C63FF 0%, #9F7AEA 50%, #EC4899 100%)' }}>
-                                {/* Glass overlay */}
-                                <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-                                {/* Glow orb */}
-                                <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+                        {/* Single Store Health Card */}
+                        <div className="relative animate-float-premium">
+                            <div className="glass-card !bg-white/98 dark:!bg-slate-900/98 border-white/50 dark:border-slate-800/50 p-7 w-76 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.13)] rotate-2 hover:rotate-0 transition-all duration-700 relative overflow-hidden group/card" style={{ width: '300px' }}>
+                                {/* Top accent bar */}
+                                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500"></div>
 
-                                <div className="relative z-10 p-5">
-                                    {/* Header */}
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-2.5">
-                                            <div className="w-9 h-9 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
-                                                <Sparkles className="w-4 h-4 text-white" />
+                                {/* Subtle background glow */}
+                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-100/40 rounded-full blur-3xl"></div>
+
+                                <div className="relative z-10 text-left space-y-5">
+                                    {/* Header Row */}
+                                    <div className="flex justify-between items-center">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl shadow-inner">
+                                                <Heart className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                             </div>
-                                            <div>
-                                                <p className="text-[8px] font-black text-white/60 uppercase tracking-[0.18em]">Current Plan</p>
-                                                <p className="text-[10px] font-bold text-white/80">
-                                                    {stats.planName === 'Free Plan' ? 'Free subscription' : 'Premium subscription'}
-                                                </p>
-                                            </div>
+                                            <span className="text-sm font-black text-slate-800 dark:text-slate-100">Store Health</span>
                                         </div>
-                                        <span className="text-[8px] font-black text-white bg-white/20 border border-white/30 px-2.5 py-1 rounded-full tracking-widest backdrop-blur-md">
+                                        <span className="text-[10px] font-black text-white px-3 py-1.5 bg-emerald-500 rounded-full tracking-wider shadow-md flex items-center gap-1">
+                                            <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse inline-block"></span>
                                             ACTIVE
                                         </span>
                                     </div>
 
-                                    {/* Plan Icon */}
-                                    <div className="flex justify-center mb-3">
-                                        <div className="w-16 h-16 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.2)] border border-white/40">
-                                            <Gem className="w-8 h-8 text-white drop-shadow-lg" />
+                                    {/* Score */}
+                                    <div>
+                                        <h4 className="text-[3.8rem] font-black text-slate-900 dark:text-slate-100 leading-none tracking-tighter">98%</h4>
+                                    </div>
+
+                                    {/* Progress Bar */}
+                                    <div>
+                                        <div className="flex justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mb-1.5">
+                                            <span>Performance</span>
+                                            <span className="text-emerald-600 dark:text-emerald-400">Excellent</span>
+                                        </div>
+                                        <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+                                            <div
+                                                className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-all duration-1000"
+                                                style={{ width: '98%' }}
+                                            ></div>
                                         </div>
                                     </div>
 
-                                    {/* Plan Name */}
-                                    <h3 className="text-center text-lg font-black text-white tracking-tight mb-3 drop-shadow-sm">
-                                        {stats.planName || 'Free Plan'}
-                                    </h3>
+                                    {/* Last Updated */}
+                                    <p className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold flex items-center gap-1.5">
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shadow-sm" />
+                                        Last Updated: <span className="text-slate-600 dark:text-slate-300 font-bold">Today</span>
+                                    </p>
 
-                                    {/* Feature Badges */}
-                                    <div className="flex flex-wrap justify-center gap-1.5 mb-4">
-                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
-                                            ⚡ {stats.productLimit > 0 ? `${(stats.productLimit / 1000).toFixed(0)}K Limit` : 'No Limit'}
-                                        </span>
-                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
-                                            📈 20% Profit
-                                        </span>
-                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
-                                            🛡️ 24/7 Support
-                                        </span>
-                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
-                                            📡 API Access
-                                        </span>
-                                    </div>
-
-                                    {/* Upgrade Button */}
+                                    {/* Show Detail Button — visible to all (admin can control via backend) */}
                                     <button
-                                        onClick={() => router.push('/packages')}
-                                        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-white/95 hover:bg-white text-slate-800 rounded-xl font-black text-xs tracking-wide transition-all shadow-lg hover:shadow-xl active:scale-95"
+                                        onClick={() => { }}
+                                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-bold text-xs transition-all shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300 active:scale-95"
                                     >
-                                        Upgrade Level <ArrowRight className="w-3.5 h-3.5" />
+                                        <Eye className="w-3.5 h-3.5" />
+                                        Show Detail
                                     </button>
-
-                                    {/* Stats Row */}
-                                    <div className="grid grid-cols-3 gap-1 mt-4 pt-3 border-t border-white/20 text-center">
-                                        <div>
-                                            <p className="text-sm font-black text-white leading-none">{stats.totalProducts > 999 ? `${(stats.totalProducts / 1000).toFixed(1)}K` : stats.totalProducts}</p>
-                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Used</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-black text-cyan-300 leading-none">{stats.remainingProducts > 999 ? `${(stats.remainingProducts / 1000).toFixed(1)}K` : stats.remainingProducts}</p>
-                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Remaining</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-black text-white leading-none">30d</p>
-                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Expires</p>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -320,14 +299,77 @@ export default function DashboardPage() {
                         </div>
                     </section>
 
-                    <section className="animate-slide-up stagger-4 text-left">
-                        <div className="premium-card p-6 bg-gradient-to-br from-slate-900 to-indigo-900 text-white relative overflow-hidden group h-full">
-                            <Sparkles className="absolute -top-4 -right-4 w-24 h-24 text-white/5 group-hover:rotate-12 transition-transform" />
-                            <h3 className="text-xl font-bold mb-2">Quick Actions</h3>
-                            <p className="text-sm text-indigo-100/60 leading-relaxed mb-4">Manage your store performance, products, and health metrics all in one place.</p>
-                            <div className="flex flex-col gap-2">
-                                <button className="text-xs font-bold text-white underline decoration-primary-500 decoration-2 underline-offset-4 hover:text-primary-400 transition-colors text-left">View Store Health →</button>
-                                <button className="text-xs font-bold text-white underline decoration-violet-400 decoration-2 underline-offset-4 hover:text-violet-300 transition-colors text-left">View Virtual Store →</button>
+                    <section className="animate-float-premium text-left">
+                        <div className="bg-white rounded-[2.5rem] border-2 border-emerald-500 shadow-[0_25px_60px_rgba(16,185,129,0.1)] h-full transition-all duration-500 group relative overflow-hidden">
+                            {/* Accent line like the package card */}
+                            <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
+
+                            <div className="relative z-10 p-8 flex flex-col h-full">
+                                {/* Icon Header */}
+                                <div className="flex justify-between items-start mb-8">
+                                    <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-2xl transform group-hover:rotate-6 transition-transform">
+                                        <Package className="w-8 h-8 text-white" />
+                                    </div>
+                                    <div className="flex flex-col items-end">
+                                        <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg">
+                                            <CheckCircle2 className="w-5 h-5" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4 mb-8">
+                                    <h2 className="text-3xl font-black text-slate-900 leading-none">ENTERPRISE PRO</h2>
+                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-[0.15em]">Subscription Current Plan</p>
+
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-5xl font-black text-slate-900 tracking-tighter">$450</span>
+                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Single Charge</span>
+                                    </div>
+                                </div>
+
+                                {/* Features List */}
+                                <div className="space-y-4 mb-10 flex-1">
+                                    {[
+                                        { text: '18,000 Products Limit', icon: '⚡' },
+                                        { text: 'Multiple Storefronts', icon: '🌐' },
+                                        { text: 'Dedicated Account Manager', icon: '👤' },
+                                        { text: 'API Access', icon: '📡' },
+                                        { text: 'Global Logistics Network', icon: '🌍' },
+                                        { text: 'Whiteglove Onboarding', icon: '💎' }
+                                    ].map((feature, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+                                                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                            </div>
+                                            <span className="text-sm font-bold text-slate-600 dark:text-slate-300">{feature.text}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Bottom Stats & Button */}
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-3 gap-2 border-t border-slate-100 dark:border-slate-800 pt-6 text-center">
+                                        <div>
+                                            <p className="text-lg font-black text-slate-900 dark:text-slate-100">3.2K</p>
+                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Used</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-lg font-black text-emerald-600">6.8K</p>
+                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Remaining</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-lg font-black text-slate-900 dark:text-slate-100">30d</p>
+                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Expires</p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={() => router.push('/packages')}
+                                        className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm tracking-[0.1em] transition-all shadow-lg hover:shadow-emerald-200 active:scale-95 uppercase"
+                                    >
+                                        Active License Mode
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </section>
