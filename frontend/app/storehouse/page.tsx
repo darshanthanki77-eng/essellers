@@ -153,7 +153,6 @@ function StorehousePageInner() {
                                         className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-black transition-all ${selectedCategory === cat.name ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/20 active:scale-[0.98]' : 'text-gray-600 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-slate-800'}`}
                                     >
                                         <span className="truncate mr-2 capitalize">{t(cat.name as any)}</span>
-                                        <span className={`text-[10px] px-2 py-0.5 rounded-lg ${selectedCategory === cat.name ? 'bg-white/20' : 'bg-gray-100 dark:bg-slate-700'}`}>{cat.count}</span>
                                     </button>
                                 ))}
                             </div>
