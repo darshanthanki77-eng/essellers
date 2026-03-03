@@ -413,6 +413,12 @@ exports.updateShopSettings = async (req, res) => {
             });
         }
 
+        // IMPORTANT: Also update the main Seller document's shop_name so Auth state stays in sync
+        if (shop_name) {
+            req.user.shop_name = shop_name;
+            await req.user.save();
+        }
+
         res.status(200).json({
             success: true,
             message: 'Shop settings updated successfully',

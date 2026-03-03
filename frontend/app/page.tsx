@@ -17,7 +17,7 @@ import { api } from '@/lib/api';
 import { useRouter } from 'next/navigation';
 
 export default function DashboardPage() {
-    const { user, isLoading: authLoading } = useAuth();
+    const { user, isLoading: authLoading, updateUser } = useAuth();
     const router = useRouter();
 
     // Original Stats from DB
@@ -50,6 +50,13 @@ export default function DashboardPage() {
 
             setIsLoading(true);
             try {
+                // Ensure profile info is fresh (especially shop name)
+                const profileRes = await api.get('/auth/profile');
+                if (profileRes.success || profileRes._id) {
+                    const freshUser = profileRes.success ? profileRes.data : profileRes;
+                    updateUser(freshUser);
+                }
+
                 // Fetch basic stats
                 const statsRes = await api.get('/sellers/stats');
                 if (statsRes.success) {
