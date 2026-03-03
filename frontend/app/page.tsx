@@ -109,7 +109,7 @@ export default function DashboardPage() {
                             </div>
                             <div className="space-y-2">
                                 <h1 className="text-2xl sm:text-4xl lg:text-7xl font-black tracking-tight animate-slide-up leading-tight">
-                                    Hello, <span className="text-yellow-300">{user.name || 'Seller'}</span>!
+                                    Hello, <span className="text-yellow-300">{(user.shop_name || user.name || 'Seller').toUpperCase()}</span>!
                                 </h1>
                                 <p className="text-base md:text-xl text-primary-50 opacity-90 animate-slide-up stagger-1 max-w-lg mx-auto md:mx-0">
                                     Welcome back to your dashboard. All systems are online and running smoothly.
