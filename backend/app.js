@@ -21,25 +21,19 @@ const app = express();
 app.set('trust proxy', 1);
 
 // CORS - manual middleware, must be first before helmet and everything else
-const allowedOrigins = [
-    'https://smartseller.vercel.app',
-    'https://essellers-web.vercel.app',
-    'https://esseller.vercel.app',
-    'https://es-phi.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:3001',
-];
-
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Whitelist production domains + local dev + any vercel preview URL
+    const isVercel = origin && origin.endsWith('.vercel.app');
+    const isLocal = origin && (origin.includes('localhost') || origin.includes('127.0.0.1'));
+
+    if (!origin || isVercel || isLocal) {
         res.setHeader('Access-Control-Allow-Origin', origin || '*');
     }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-    // Respond immediately to preflight OPTIONS requests
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
     }
