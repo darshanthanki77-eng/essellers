@@ -35,12 +35,12 @@ export default function SettingsPage() {
         }
     }, [user, authLoading, router]);
 
-    const tabs: { id: string, name: any, icon: any, color: string, bg: string, darkBg: string }[] = [
+    const tabs: { id: string, name: string, icon: any, color: string, bg: string, darkBg: string }[] = [
         { id: 'Profile', name: t('Shop Profile'), icon: Store, color: 'text-blue-600', bg: 'bg-blue-50', darkBg: 'dark:bg-blue-900/20' },
-        { id: 'Regional', name: t('Regional'), icon: Globe, color: 'text-indigo-600', bg: 'bg-indigo-50', darkBg: 'dark:bg-indigo-900/20' },
-        { id: 'Notifications', name: t('Notifications'), icon: Bell, color: 'text-amber-600', bg: 'bg-amber-50', darkBg: 'dark:bg-amber-900/20' },
-        { id: 'Security', name: t('Security'), icon: Shield, color: 'text-emerald-600', bg: 'bg-emerald-50', darkBg: 'dark:bg-emerald-900/20' },
-        { id: 'Appearance', name: t('Appearance'), icon: Palette, color: 'text-purple-600', bg: 'bg-purple-50', darkBg: 'dark:bg-purple-900/20' },
+        { id: 'Regional', name: t('Regional & Display'), icon: Globe, color: 'text-indigo-600', bg: 'bg-indigo-50', darkBg: 'dark:bg-indigo-900/20' },
+        { id: 'Notifications', name: t('Alerts & Messages'), icon: Bell, color: 'text-amber-600', bg: 'bg-amber-50', darkBg: 'dark:bg-amber-900/20' },
+        { id: 'Security', name: t('Account Security'), icon: Shield, color: 'text-emerald-600', bg: 'bg-emerald-50', darkBg: 'dark:bg-emerald-900/20' },
+        { id: 'Appearance', name: t('Visual Interface'), icon: Palette, color: 'text-purple-600', bg: 'bg-purple-50', darkBg: 'dark:bg-purple-900/20' },
     ];
 
     const renderContent = () => {
@@ -72,8 +72,33 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-10">
-                    {/* Premium Sidebar */}
-                    <aside className="lg:w-72 space-y-2">
+                    {/* Mobile Navigation Dropdown */}
+                    <div className="lg:hidden w-full mb-6">
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                {React.createElement(tabs.find(t => t.id === activeTab)?.icon || Store, {
+                                    className: `w-5 h-5 ${tabs.find(t => t.id === activeTab)?.color || 'text-blue-500'}`
+                                })}
+                            </div>
+                            <select
+                                value={activeTab}
+                                onChange={(e) => setActiveTab(e.target.value)}
+                                className="w-full pl-12 pr-10 py-4 bg-white dark:bg-slate-900 border-2 border-transparent focus:border-blue-500/20 rounded-2xl shadow-xl shadow-blue-500/5 dark:shadow-none appearance-none font-bold text-gray-900 dark:text-slate-100 outline-none transition-all cursor-pointer"
+                            >
+                                {tabs.map((tab) => (
+                                    <option key={tab.id} value={tab.id} className="font-bold py-2 bg-white dark:bg-slate-900">
+                                        {tab.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                                <Settings className="w-4 h-4 text-gray-400 group-hover:rotate-90 transition-transform duration-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Premium Sidebar (Hidden on Mobile) */}
+                    <aside className="hidden lg:block lg:w-72 space-y-2">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
@@ -165,6 +190,8 @@ function ProfileSettings() {
         }
     };
 
+    const { updateUser } = useAuth();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage('');
@@ -172,6 +199,8 @@ function ProfileSettings() {
             const response = await api.put('/sellers/shop-settings', formData);
             if (response.success) {
                 setMessage('Success: Your shop settings have been updated.');
+                // Update global state immediately
+                updateUser({ shop_name: formData.shop_name });
             }
         } catch (error: any) {
             setMessage(`Error: ${error.message}`);
