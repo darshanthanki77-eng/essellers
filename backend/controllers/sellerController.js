@@ -367,17 +367,18 @@ exports.updateShopSettings = async (req, res) => {
             settings
         } = req.body;
 
-        if (language) {
-            req.user.language = language;
-        }
-
+        // Prepare updates for main Seller model to avoid validation errors with missing fields (like password)
+        const sellerUpdates = {};
+        if (language) sellerUpdates.language = language;
         if (settings) {
-            // Merge settings object to avoid overwriting all but keep top level structure
-            req.user.settings = { ...req.user.settings, ...settings };
+            // Parse settings if it's a string (though it should be parsed by express already)
+            const parsedSettings = typeof settings === 'string' ? JSON.parse(settings) : settings;
+            sellerUpdates.settings = { ...(req.user.settings || {}), ...parsedSettings };
         }
+        if (shop_name) sellerUpdates.shop_name = shop_name;
 
-        if (language || settings) {
-            await req.user.save();
+        if (Object.keys(sellerUpdates).length > 0) {
+            await Seller.findByIdAndUpdate(sellerId, { $set: sellerUpdates });
         }
 
         let shopProfile = await ShopProfile.findOne({ seller_id: sellerId });
@@ -405,18 +406,12 @@ exports.updateShopSettings = async (req, res) => {
             shopProfile = await ShopProfile.create({
                 seller_id: sellerId,
                 shop_name: shop_name || req.user.shop_name,
-                shop_contact,
-                shop_address,
-                shop_metatitle,
-                shop_metadesc,
-                shop_logo
+                shop_contact: shop_contact || '',
+                shop_address: shop_address || '',
+                shop_metatitle: shop_metatitle || '',
+                shop_metadesc: shop_metadesc || '',
+                shop_logo: shop_logo || ''
             });
-        }
-
-        // IMPORTANT: Also update the main Seller document's shop_name so Auth state stays in sync
-        if (shop_name) {
-            req.user.shop_name = shop_name;
-            await req.user.save();
         }
 
         res.status(200).json({
@@ -426,8 +421,8 @@ exports.updateShopSettings = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Server Error' });
+        console.error('Update Shop Settings Error:', error);
+        res.status(500).json({ success: false, message: 'Server Error: ' + error.message });
     }
 };
 
