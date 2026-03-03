@@ -128,7 +128,7 @@ export default function DashboardPage() {
                         </div>
 
                         {/* Single Store Health Card */}
-                        <div className="relative hidden lg:block animate-float-premium">
+                        <div className="relative animate-float-premium">
                             <div className="glass-card !bg-white/98 dark:!bg-slate-900/98 border-white/50 dark:border-slate-800/50 p-7 w-76 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.13)] rotate-2 hover:rotate-0 transition-all duration-700 relative overflow-hidden group/card" style={{ width: '300px' }}>
                                 {/* Top accent bar */}
                                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500"></div>
