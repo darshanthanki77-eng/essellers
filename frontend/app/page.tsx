@@ -276,97 +276,68 @@ export default function DashboardPage() {
                     </div>
                 </section>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <section className="animate-slide-up stagger-4 space-y-8 text-left">
-                        <div className="glass-card p-6 !bg-white/40 dark:!bg-slate-800/40 border-white/60 dark:border-slate-700/60 h-full">
-                            <div className="flex items-center justify-between mb-6">
-                                <h3 className="font-bold flex items-center gap-2 dark:text-slate-100">
-                                    <Activity className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                                    Live Shop Feed
-                                </h3>
-                                <span className="flex h-2 w-2 relative">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-success-500"></span>
-                                </span>
-                            </div>
-                            <div className="space-y-4">
-                                {isLoading ? (
-                                    <p className="text-xs text-gray-400 p-4 text-center">Syncing feed...</p>
-                                ) : (
-                                    <p className="text-xs text-gray-400 dark:text-slate-500 p-8 text-center bg-white/30 dark:bg-slate-900/30 rounded-2xl italic">No recent activity detected.</p>
-                                )}
-                            </div>
-                        </div>
-                    </section>
-
+                <div className="max-w-4xl mx-auto w-full">
                     <section className="text-left">
-                        <div className="relative overflow-hidden rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.2)] h-full transition-all duration-500" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)' }}>
+                        <div className="relative overflow-hidden rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.2)] transition-all duration-500" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)' }}>
                             <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
                             <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
 
                             <div className="relative z-10 p-8 flex flex-col h-full">
                                 {/* Header */}
-                                <div className="flex items-start justify-between mb-8">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 shadow-inner">
-                                            <Sparkles className="w-6 h-6 text-white" />
+                                <div className="flex items-start justify-between mb-10">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 shadow-inner">
+                                            <Sparkles className="w-8 h-8 text-white" />
                                         </div>
                                         <div>
-                                            <p className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Current Plan</p>
-                                            <p className="text-xs font-bold text-white/70">Subscription Current Plan</p>
+                                            <p className="text-xs font-black text-white uppercase tracking-[0.2em]">Current Plan</p>
+                                            <p className="text-sm font-bold text-white/70">Premium subscription</p>
                                         </div>
                                     </div>
-                                    <span className="text-[10px] font-black text-white bg-white/20 border border-white/30 px-4 py-1.5 rounded-full tracking-[0.15em] backdrop-blur-md">ACTIVE</span>
+                                    <span className="text-xs font-black text-white bg-white/20 border border-white/30 px-5 py-2 rounded-full tracking-[0.15em] backdrop-blur-md uppercase">ACTIVE</span>
                                 </div>
 
                                 {/* Central Diamond */}
-                                <div className="flex flex-col items-center mb-6">
-                                    <div className="w-24 h-24 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-white/30 mb-6 relative">
-                                        <div className="absolute inset-0 bg-white/30 rounded-full blur-xl scale-75"></div>
-                                        <Gem className="w-12 h-12 text-white drop-shadow-2xl relative z-10" />
+                                <div className="flex flex-col items-center mb-10">
+                                    <div className="w-28 h-28 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-white/30 mb-8 relative">
+                                        <div className="absolute inset-0 bg-white/30 rounded-full blur-2xl scale-75"></div>
+                                        <Gem className="w-14 h-14 text-white drop-shadow-2xl relative z-10" />
                                     </div>
-                                    <h3 className="text-3xl font-black text-white tracking-tight drop-shadow-md text-center">ENTERPRISE PRO</h3>
-
-                                    <div className="flex items-baseline gap-2 mt-2">
-                                        <span className="text-4xl font-black text-white">$450</span>
-                                        <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Single Charge</span>
-                                    </div>
+                                    <h3 className="text-5xl font-black text-white tracking-tight drop-shadow-md text-center">Diamond Plan</h3>
                                 </div>
 
-                                {/* Features Pills */}
-                                <div className="flex flex-wrap justify-center gap-2 mb-8 flex-1">
+                                {/* Features Pills - Matching 2nd Image Labels */}
+                                <div className="flex flex-wrap justify-center gap-3 mb-10">
                                     {[
-                                        { text: '18,000 Products Limit', icon: '⚡' },
-                                        { text: 'Multiple Storefronts', icon: '🌐' },
-                                        { text: 'Dedicated Account Manager', icon: '👤' },
-                                        { text: 'API Access', icon: '📡' },
-                                        { text: 'Global Logistics Network', icon: '🌍' },
-                                        { text: 'Whiteglove Onboarding', icon: '💎' }
+                                        { text: '10k Limit', icon: '⚡' },
+                                        { text: '20% Profit', icon: '📈' },
+                                        { text: '24/7 Support', icon: '�️' },
+                                        { text: 'API Access', icon: '📡' }
                                     ].map((f, i) => (
-                                        <span key={i} className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-[10px] font-bold text-white backdrop-blur-md flex items-center gap-1.5">
-                                            <span className="opacity-80">{f.icon}</span> {f.text}
+                                        <span key={i} className="px-5 py-2.5 bg-white/10 border border-white/20 rounded-2xl text-xs font-bold text-white backdrop-blur-md flex items-center gap-2">
+                                            <span>{f.icon}</span> {f.text}
                                         </span>
                                     ))}
                                 </div>
 
-                                {/* Bottom Button & Stats */}
-                                <div className="space-y-6">
-                                    <button onClick={() => router.push('/packages')} className="w-full flex items-center justify-center gap-2 py-4 bg-white text-primary-700 rounded-2xl font-black text-sm tracking-uppercase transition-all shadow-xl active:scale-95">
-                                        Upgrade Level <ArrowRight className="w-5 h-5" />
+                                {/* UI Elements from Image */}
+                                <div className="space-y-8">
+                                    <button onClick={() => router.push('/packages')} className="w-full flex items-center justify-center gap-3 py-5 bg-white text-primary-700 rounded-[1.8rem] font-black text-lg tracking-uppercase transition-all shadow-xl active:scale-95 shadow-white/10">
+                                        Upgrade Level <ArrowRight className="w-6 h-6" />
                                     </button>
 
-                                    <div className="grid grid-cols-3 gap-4 text-center">
+                                    <div className="grid grid-cols-3 gap-6 text-center pt-4 border-t border-white/10">
                                         <div>
-                                            <p className="text-xl font-black text-white">3.2K</p>
-                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Used</p>
+                                            <p className="text-2xl font-black text-white">3.2K</p>
+                                            <p className="text-xs font-bold text-white/50 uppercase tracking-widest mt-1">Used</p>
                                         </div>
                                         <div>
-                                            <p className="text-xl font-black text-white">6.8K</p>
-                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Remaining</p>
+                                            <p className="text-2xl font-black text-white">6.8K</p>
+                                            <p className="text-xs font-bold text-white/50 uppercase tracking-widest mt-1">Remaining</p>
                                         </div>
                                         <div>
-                                            <p className="text-xl font-black text-pink-200">30d</p>
-                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Expires</p>
+                                            <p className="text-2xl font-black text-pink-200">30d</p>
+                                            <p className="text-xs font-bold text-white/50 uppercase tracking-widest mt-1">Expires</p>
                                         </div>
                                     </div>
                                 </div>
