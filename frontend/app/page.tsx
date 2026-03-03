@@ -115,16 +115,6 @@ export default function DashboardPage() {
                                     Welcome back to your dashboard. All systems are online and running smoothly.
                                 </p>
                             </div>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-4 pt-2 md:pt-4">
-                                <button className="px-6 py-3 md:px-8 md:py-4 bg-white text-primary-600 rounded-2xl font-black hover:scale-105 transition-all shadow-xl flex items-center gap-2 group/btn text-sm md:text-base">
-                                    Upload Products
-                                    <ArrowUpRight className="w-4 md:w-5 h-4 md:h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
-                                </button>
-                                <button className="px-6 py-3 md:px-8 md:py-4 bg-primary-900/40 backdrop-blur-md text-white rounded-2xl font-black border border-white/20 hover:bg-primary-900/60 transition-all flex items-center gap-2 text-sm md:text-base">
-                                    <Globe className="w-4 md:w-5 h-4 md:h-5" />
-                                    Global Stats
-                                </button>
-                            </div>
                         </div>
 
                         {/* Single Store Health Card */}
