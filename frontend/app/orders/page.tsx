@@ -156,8 +156,8 @@ export default function OrdersPage() {
                                                         <p className="text-[10px] text-gray-400 dark:text-slate-500">{order.customer_email}</p>
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-success-50 text-success-600' : 'bg-gray-100 text-gray-500'}`}>
-                                                            {order.pick_up_status || t('Unpicked-Up')}
+                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-success-50 text-success-600' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
+                                                            {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
                                                         </span>
                                                     </td>
                                                     <td className="px-4 py-3 text-right">
@@ -196,7 +196,9 @@ export default function OrdersPage() {
                                                                 </div>
                                                                 <div className="text-left">
                                                                     <span className="text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-wide">{t('Pickup')}</span>
-                                                                    <p className="font-bold text-gray-700 dark:text-slate-300">{order.pick_up_status || t('Unpicked-Up')}</p>
+                                                                    <p className={`font-bold ${order.pick_up_status === 'Picked-Up' ? 'text-success-600' : 'text-red-600'}`}>
+                                                                        {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
+                                                                    </p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -262,9 +264,9 @@ export default function OrdersPage() {
                                             <td className="px-6 py-4">
                                                 <span className={`text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full ${order.pick_up_status === 'Picked-Up'
                                                     ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
-                                                    : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                                                    : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'
                                                     }`}>
-                                                    {order.pick_up_status || t('Unpicked-Up')}
+                                                    {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 text-right">
