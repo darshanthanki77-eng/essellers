@@ -156,7 +156,7 @@ export default function OrdersPage() {
                                                         <p className="text-[10px] text-gray-400 dark:text-slate-500">{order.customer_email}</p>
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-success-50 text-success-600' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
+                                                        <span className={`text-[10px] px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-success-50 text-success-600' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
                                                             {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
                                                         </span>
                                                     </td>
@@ -196,7 +196,7 @@ export default function OrdersPage() {
                                                                 </div>
                                                                 <div className="text-left">
                                                                     <span className="text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-wide">{t('Pickup')}</span>
-                                                                    <p className={`font-bold ${order.pick_up_status === 'Picked-Up' ? 'text-success-600' : 'text-red-600'}`}>
+                                                                    <p className={`${order.pick_up_status === 'Picked-Up' ? 'text-success-600' : 'text-red-600'}`}>
                                                                         {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
                                                                     </p>
                                                                 </div>
@@ -262,7 +262,7 @@ export default function OrdersPage() {
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4">
-                                                <span className={`text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full ${order.pick_up_status === 'Picked-Up'
+                                                <span className={`text-xs uppercase tracking-wider px-3 py-1 rounded-full ${order.pick_up_status === 'Picked-Up'
                                                     ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
                                                     : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'
                                                     }`}>
