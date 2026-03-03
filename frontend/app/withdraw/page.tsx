@@ -432,11 +432,11 @@ export default function WithdrawPage() {
                                             {walletData.transactions.withdrawals.length > 3 && (
                                                 <div className="mt-6 flex justify-center">
                                                     <button
-                                                        onClick={() => setShowAllHistory(!showAllHistory)}
+                                                        onClick={() => router.push('/withdraw/history')}
                                                         className="flex items-center gap-2 px-6 py-3 bg-gray-50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl text-[10px] font-black text-primary-600 dark:text-primary-400 transition-all group"
                                                     >
-                                                        {showAllHistory ? t('Show Less') : t('View More')}
-                                                        <Plus className={`w-3 h-3 transition-transform duration-300 ${showAllHistory ? 'rotate-45' : 'group-hover:scale-125'}`} />
+                                                        {t('View More')}
+                                                        <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
                                                     </button>
                                                 </div>
                                             )}

@@ -271,7 +271,7 @@ export default function DashboardPage() {
                             </div>
                         </div>
                     </div>
-                    <div className="glass-card p-6 md:p-10 !bg-white/60 dark:!bg-slate-900/60">
+                    <div className="w-full">
                         <SalesChart data={chartData} />
                     </div>
                 </section>
