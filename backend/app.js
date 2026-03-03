@@ -23,6 +23,7 @@ app.set('trust proxy', 1);
 // CORS - manual middleware, must be first before helmet and everything else
 const allowedOrigins = [
     'https://smartseller.vercel.app',
+    'https://essellers-web.vercel.app',
     'https://esseller.vercel.app',
     'https://es-phi.vercel.app',
     'http://localhost:3000',
