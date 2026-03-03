@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Shell from '@/components/layout/Shell';
-import { Package, CheckCircle2, Star, Zap, ArrowRight, ShieldCheck, Sparkles, X, Lock, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Package, CheckCircle2, Star, Zap, ArrowRight, ShieldCheck, Sparkles, X, Lock, AlertTriangle, RefreshCw, Gem } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -161,71 +161,85 @@ export default function PackagesPage() {
                         <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Loading Secure Packs...</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-stretch pt-4">
                         {plans.map((pkg) => {
                             const purchased = isAlreadyPurchased(pkg.name);
+                            const isPremium = true; // All cards now use the premium design
 
                             return (
-                                <div key={pkg.sku} className={`relative group flex flex-col items-center ${pkg.popular ? 'scale-105 z-10' : ''}`}>
+                                <div key={pkg.sku} className={`relative group flex flex-col ${pkg.popular ? 'scale-105 z-10' : ''}`}>
                                     {pkg.popular && !purchased && (
-                                        <div className="absolute -top-5 px-6 py-2 bg-amber-400 text-amber-950 text-[10px] font-black uppercase tracking-widest rounded-full shadow-2xl shadow-amber-200 z-20 flex items-center gap-2 animate-bounce">
+                                        <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-amber-400 text-amber-950 text-[10px] font-black uppercase tracking-widest rounded-full shadow-2xl z-20 flex items-center gap-2 animate-bounce">
                                             <Star className="w-3.5 h-3.5 fill-current" />
                                             Most Popular
                                         </div>
                                     )}
 
-                                    <div className={`premium-card p-10 h-full flex flex-col border-2 transition-all duration-500 relative overflow-hidden ${purchased
-                                        ? 'border-emerald-500 bg-emerald-50/10'
-                                        : pkg.popular
-                                            ? 'border-primary-500 shadow-3xl shadow-primary-500/10 scale-[1.03]'
-                                            : 'border-transparent hover:border-gray-200 hover:shadow-2xl'
+                                    <div className={`relative overflow-hidden rounded-[2.5rem] p-8 h-full flex flex-col bg-gradient-to-br transition-all duration-700 shadow-xl ${pkg.name === 'Starter Merchant' ? 'from-blue-500 via-cyan-500 to-blue-600' :
+                                        pkg.name === 'Professional Seller' ? 'from-indigo-600 via-purple-600 to-pink-500' :
+                                            'from-slate-800 via-slate-900 to-black'
                                         }`}>
-                                        {purchased && (
-                                            <div className="absolute top-0 right-0 p-6">
-                                                <div className="bg-emerald-500 text-white p-2 rounded-2xl shadow-lg ring-4 ring-white">
-                                                    <CheckCircle2 className="w-5 h-5" />
+                                        {/* Background Noise/Decoration */}
+                                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+                                        <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
+
+                                        <div className="relative z-10 h-full flex flex-col items-center text-center space-y-8">
+                                            {/* Top Row: Icon & Status */}
+                                            <div className="w-full flex justify-between items-center mb-2">
+                                                <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
+                                                    <Package className="w-6 h-6 text-white" />
+                                                </div>
+                                                {purchased && (
+                                                    <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[8px] font-black text-white uppercase tracking-widest border border-white/30">Active License</span>
+                                                )}
+                                            </div>
+
+                                            {/* Center Premium Icon */}
+                                            <div className="relative py-4">
+                                                <div className="w-32 h-32 bg-white/15 backdrop-blur-3xl rounded-full flex items-center justify-center border border-white/20 shadow-2xl animate-float-premium">
+                                                    <div className="p-5 bg-gradient-to-br from-blue-100 to-white rounded-full shadow-inner relative z-10">
+                                                        <Gem className={`w-12 h-12 ${pkg.name === 'Starter Merchant' ? 'text-blue-500' :
+                                                            pkg.name === 'Professional Seller' ? 'text-purple-600' :
+                                                                'text-slate-800'
+                                                            }`} />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        )}
 
-                                        <div className={`w-16 h-16 rounded-[1.5rem] bg-gradient-to-br ${pkg.color} flex items-center justify-center mb-8 shadow-xl group-hover:scale-110 transition-transform duration-500`}>
-                                            <Package className="w-8 h-8 text-white" />
+                                            {/* Plan Name & Price */}
+                                            <div className="space-y-1">
+                                                <h3 className="text-3xl font-black text-white tracking-tighter uppercase italic drop-shadow-lg">{pkg.name}</h3>
+                                                <div className="flex items-baseline justify-center gap-1">
+                                                    <span className="text-4xl font-black text-white">{pkg.price_label}</span>
+                                                    <span className="text-[10px] text-white/50 font-black uppercase tracking-widest">/ Life</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Features List */}
+                                            <ul className="w-full bg-white/5 backdrop-blur-md rounded-[2rem] p-6 space-y-3 flex-1 border border-white/10">
+                                                {pkg.features.map((feature: string, i: number) => (
+                                                    <li key={i} className="flex items-center gap-3 text-left">
+                                                        <div className="p-1 bg-white/10 rounded-lg shrink-0">
+                                                            <CheckCircle2 className="w-3 h-3 text-white" />
+                                                        </div>
+                                                        <span className="text-xs font-bold text-white/90 leading-tight">{feature}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+
+                                            {/* Action Button */}
+                                            <button
+                                                onClick={() => handleOpenModal(pkg)}
+                                                disabled={purchased}
+                                                className={`w-full py-5 rounded-[1.8rem] text-sm font-black transition-all flex items-center justify-center gap-2 group/btn shadow-2xl ${purchased
+                                                    ? 'bg-white/20 text-white cursor-default'
+                                                    : 'bg-white text-slate-900 hover:scale-[1.03] active:scale-[0.98]'
+                                                    }`}
+                                            >
+                                                {purchased ? 'Owned' : 'Upgrade Level'}
+                                                {!purchased && <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />}
+                                            </button>
                                         </div>
-
-                                        <div className="space-y-2 mb-8">
-                                            <h3 className="text-2xl font-black text-gray-900 tracking-tight leading-none uppercase">{pkg.name}</h3>
-                                            <p className="text-xs text-gray-500 font-bold leading-relaxed">{pkg.description}</p>
-                                        </div>
-
-                                        <div className="flex items-baseline gap-2 mb-10 pb-8 border-b border-gray-100/50">
-                                            <span className="text-5xl font-black text-gray-900 tracking-tighter">{pkg.price_label}</span>
-                                            <span className="text-[10px] text-gray-400 font-black uppercase tracking-widest">Single Charge</span>
-                                        </div>
-
-                                        <ul className="space-y-4 mb-12 flex-1 relative z-10">
-                                            {pkg.features.map((feature: string, i: number) => (
-                                                <li key={i} className={`flex items-start gap-3 text-sm font-semibold transition-colors ${purchased ? 'text-emerald-700' : 'text-gray-600'}`}>
-                                                    <div className={`p-1 rounded-lg mt-0.5 ${purchased ? 'bg-emerald-100 text-emerald-600' : 'bg-primary-50 text-primary-600'}`}>
-                                                        <CheckCircle2 className="w-3.5 h-3.5" />
-                                                    </div>
-                                                    {feature}
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        <button
-                                            onClick={() => handleOpenModal(pkg)}
-                                            disabled={purchased}
-                                            className={`w-full py-5 rounded-[1.5rem] font-black transition-all flex items-center justify-center gap-3 relative overflow-hidden group/btn ${purchased
-                                                ? 'bg-emerald-500 text-white cursor-default'
-                                                : pkg.popular
-                                                    ? 'bg-primary-600 text-white shadow-xl shadow-primary-200 hover:scale-[1.02] active:scale-[0.98]'
-                                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                                                }`}
-                                        >
-                                            <span className="relative z-10">{purchased ? 'Active License' : 'Purchase Plan'}</span>
-                                            {!purchased && <ArrowRight className="w-5 h-5 relative z-10 group-hover/btn:translate-x-1.5 transition-transform" />}
-                                        </button>
                                     </div>
                                 </div>
                             );
@@ -319,6 +333,15 @@ export default function PackagesPage() {
                     </div>
                 </div>
             )}
+            <style jsx global>{`
+                @keyframes float-premium {
+                    0%, 100% { transform: translateY(0) rotate(0); }
+                    50% { transform: translateY(-10px) rotate(2deg); }
+                }
+                .animate-float-premium {
+                    animation: float-premium 5s ease-in-out infinite;
+                }
+            `}</style>
         </Shell>
     );
 }
