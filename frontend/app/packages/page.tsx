@@ -143,14 +143,14 @@ export default function PackagesPage() {
                         <p className="text-gray-400 text-sm font-medium">Loading plans...</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {plans.map((pkg) => {
                             const purchased = isAlreadyPurchased(pkg.name);
 
                             return (
                                 <div
                                     key={pkg.sku}
-                                    className="relative flex flex-col bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+                                    className="relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-2xl border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
                                 >
                                     <div className="p-8 flex flex-col flex-1 gap-6">
 
@@ -210,8 +210,8 @@ export default function PackagesPage() {
                                             onClick={() => handleOpenModal(pkg)}
                                             disabled={purchased}
                                             className={`w-full py-4 rounded-full text-sm font-black tracking-wide transition-all mt-2 ${purchased
-                                                    ? 'bg-emerald-500 text-white cursor-default'
-                                                    : 'bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white shadow-md shadow-emerald-100'
+                                                ? 'bg-emerald-500 text-white cursor-default'
+                                                : 'bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white shadow-md shadow-emerald-100'
                                                 }`}
                                         >
                                             {purchased ? 'Active License' : 'Upgrade Level'}
@@ -285,8 +285,8 @@ export default function PackagesPage() {
                                 onClick={handlePurchase}
                                 disabled={isSubmitting}
                                 className={`w-full py-4 rounded-full font-black text-base transition-all flex items-center justify-center gap-2 ${isSubmitting
-                                        ? 'bg-gray-100 dark:bg-slate-800 text-gray-400 cursor-not-allowed'
-                                        : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-emerald-100'
+                                    ? 'bg-gray-100 dark:bg-slate-800 text-gray-400 cursor-not-allowed'
+                                    : 'bg-emerald-500 hover:bg-emerald-600 text-white hover:scale-[1.01] active:scale-[0.98] shadow-lg shadow-emerald-100'
                                     }`}
                             >
                                 {isSubmitting ? 'Processing...' : 'Confirm Purchase'}

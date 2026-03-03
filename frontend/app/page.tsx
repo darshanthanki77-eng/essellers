@@ -299,36 +299,42 @@ export default function DashboardPage() {
                         </div>
                     </section>
 
-                    <section className="animate-float-premium text-left">
-                        <div className="bg-white rounded-[2.5rem] border-2 border-emerald-500 shadow-[0_25px_60px_rgba(16,185,129,0.1)] h-full transition-all duration-500 group relative overflow-hidden">
-                            {/* Accent line like the package card */}
-                            <div className="absolute top-0 left-0 w-full h-2 bg-emerald-500"></div>
+                    <section className="text-left">
+                        <div className="relative overflow-hidden rounded-[2.5rem] shadow-[0_25px_60px_rgba(0,0,0,0.2)] h-full transition-all duration-500" style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)' }}>
+                            <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
+                            <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
 
                             <div className="relative z-10 p-8 flex flex-col h-full">
-                                {/* Icon Header */}
-                                <div className="flex justify-between items-start mb-8">
-                                    <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-2xl transform group-hover:rotate-6 transition-transform">
-                                        <Package className="w-8 h-8 text-white" />
-                                    </div>
-                                    <div className="flex flex-col items-end">
-                                        <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white shadow-lg">
-                                            <CheckCircle2 className="w-5 h-5" />
+                                {/* Header */}
+                                <div className="flex items-start justify-between mb-8">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 shadow-inner">
+                                            <Sparkles className="w-6 h-6 text-white" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[10px] font-black text-white uppercase tracking-[0.2em]">Current Plan</p>
+                                            <p className="text-xs font-bold text-white/70">Subscription Current Plan</p>
                                         </div>
                                     </div>
+                                    <span className="text-[10px] font-black text-white bg-white/20 border border-white/30 px-4 py-1.5 rounded-full tracking-[0.15em] backdrop-blur-md">ACTIVE</span>
                                 </div>
 
-                                <div className="space-y-4 mb-8">
-                                    <h2 className="text-3xl font-black text-slate-900 leading-none">ENTERPRISE PRO</h2>
-                                    <p className="text-sm text-slate-400 font-bold uppercase tracking-[0.15em]">Subscription Current Plan</p>
+                                {/* Central Diamond */}
+                                <div className="flex flex-col items-center mb-6">
+                                    <div className="w-24 h-24 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.2)] border border-white/30 mb-6 relative">
+                                        <div className="absolute inset-0 bg-white/30 rounded-full blur-xl scale-75"></div>
+                                        <Gem className="w-12 h-12 text-white drop-shadow-2xl relative z-10" />
+                                    </div>
+                                    <h3 className="text-3xl font-black text-white tracking-tight drop-shadow-md text-center">ENTERPRISE PRO</h3>
 
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-5xl font-black text-slate-900 tracking-tighter">$450</span>
-                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Single Charge</span>
+                                    <div className="flex items-baseline gap-2 mt-2">
+                                        <span className="text-4xl font-black text-white">$450</span>
+                                        <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Single Charge</span>
                                     </div>
                                 </div>
 
-                                {/* Features List */}
-                                <div className="space-y-4 mb-10 flex-1">
+                                {/* Features Pills */}
+                                <div className="flex flex-wrap justify-center gap-2 mb-8 flex-1">
                                     {[
                                         { text: '18,000 Products Limit', icon: '⚡' },
                                         { text: 'Multiple Storefronts', icon: '🌐' },
@@ -336,39 +342,33 @@ export default function DashboardPage() {
                                         { text: 'API Access', icon: '📡' },
                                         { text: 'Global Logistics Network', icon: '🌍' },
                                         { text: 'Whiteglove Onboarding', icon: '💎' }
-                                    ].map((feature, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-                                                <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                                            </div>
-                                            <span className="text-sm font-bold text-slate-600 dark:text-slate-300">{feature.text}</span>
-                                        </div>
+                                    ].map((f, i) => (
+                                        <span key={i} className="px-3 py-2 bg-white/10 border border-white/20 rounded-xl text-[10px] font-bold text-white backdrop-blur-md flex items-center gap-1.5">
+                                            <span className="opacity-80">{f.icon}</span> {f.text}
+                                        </span>
                                     ))}
                                 </div>
 
-                                {/* Bottom Stats & Button */}
+                                {/* Bottom Button & Stats */}
                                 <div className="space-y-6">
-                                    <div className="grid grid-cols-3 gap-2 border-t border-slate-100 dark:border-slate-800 pt-6 text-center">
+                                    <button onClick={() => router.push('/packages')} className="w-full flex items-center justify-center gap-2 py-4 bg-white text-primary-700 rounded-2xl font-black text-sm tracking-uppercase transition-all shadow-xl active:scale-95">
+                                        Upgrade Level <ArrowRight className="w-5 h-5" />
+                                    </button>
+
+                                    <div className="grid grid-cols-3 gap-4 text-center">
                                         <div>
-                                            <p className="text-lg font-black text-slate-900 dark:text-slate-100">3.2K</p>
-                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Used</p>
+                                            <p className="text-xl font-black text-white">3.2K</p>
+                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Used</p>
                                         </div>
                                         <div>
-                                            <p className="text-lg font-black text-emerald-600">6.8K</p>
-                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Remaining</p>
+                                            <p className="text-xl font-black text-white">6.8K</p>
+                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Remaining</p>
                                         </div>
                                         <div>
-                                            <p className="text-lg font-black text-slate-900 dark:text-slate-100">30d</p>
-                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Expires</p>
+                                            <p className="text-xl font-black text-pink-200">30d</p>
+                                            <p className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Expires</p>
                                         </div>
                                     </div>
-
-                                    <button
-                                        onClick={() => router.push('/packages')}
-                                        className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black text-sm tracking-[0.1em] transition-all shadow-lg hover:shadow-emerald-200 active:scale-95 uppercase"
-                                    >
-                                        Active License Mode
-                                    </button>
                                 </div>
                             </div>
                         </div>
