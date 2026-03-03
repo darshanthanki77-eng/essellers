@@ -129,14 +129,15 @@ export default function OrdersPage() {
                                 <tr>
                                     <th className="px-4 py-3 text-xs font-semibold text-gray-700 dark:text-slate-400">{t('Order ID')}</th>
                                     <th className="px-4 py-3 text-xs font-semibold text-gray-700 dark:text-slate-400">{t('Customer')}</th>
+                                    <th className="px-4 py-3 text-xs font-semibold text-gray-700 dark:text-slate-400">{t('Pickup')}</th>
                                     <th className="px-4 py-3 text-xs font-semibold text-gray-700 dark:text-slate-400 text-right">{t('Action')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
                                 {isLoading ? (
-                                    <tr><td colSpan={3} className="px-4 py-8 text-center text-gray-500 dark:text-slate-500 text-sm">{t('Loading orders...')}</td></tr>
+                                    <tr><td colSpan={4} className="px-4 py-8 text-center text-gray-500 dark:text-slate-500 text-sm">{t('Loading orders...')}</td></tr>
                                 ) : orders?.length === 0 ? (
-                                    <tr><td colSpan={3} className="px-4 py-8 text-center text-gray-500 dark:text-slate-500 text-sm">{t('No orders found.')}</td></tr>
+                                    <tr><td colSpan={4} className="px-4 py-8 text-center text-gray-500 dark:text-slate-500 text-sm">{t('No orders found.')}</td></tr>
                                 ) : (
                                     (orders || []).map((order) => {
                                         const isExpanded = expandedRows.has(order._id);
@@ -153,6 +154,11 @@ export default function OrdersPage() {
                                                     <td className="px-4 py-3">
                                                         <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm">{order.customer_name}</p>
                                                         <p className="text-[10px] text-gray-400 dark:text-slate-500">{order.customer_email}</p>
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-success-50 text-success-600' : 'bg-gray-100 text-gray-500'}`}>
+                                                            {order.pick_up_status || t('Unpicked-Up')}
+                                                        </span>
                                                     </td>
                                                     <td className="px-4 py-3 text-right">
                                                         <div className="flex items-center justify-end gap-1">
@@ -173,7 +179,7 @@ export default function OrdersPage() {
                                                 </tr>
                                                 {isExpanded && (
                                                     <tr key={`${order._id}-expanded`} className="bg-primary-50/40 dark:bg-primary-900/10">
-                                                        <td colSpan={3} className="px-4 pb-3 pt-1">
+                                                        <td colSpan={4} className="px-4 pb-3 pt-1">
                                                             <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-xs">
                                                                 <div className="text-left">
                                                                     <span className="text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-wide">{t('Date')}</span>
@@ -187,6 +193,10 @@ export default function OrdersPage() {
                                                                 <div className="text-left">
                                                                     <span className="text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-wide">{t('Status')}</span>
                                                                     <div className="mt-0.5"><span className={`badge ${statusColor}`}>{t(order.status)}</span></div>
+                                                                </div>
+                                                                <div className="text-left">
+                                                                    <span className="text-gray-400 dark:text-slate-500 font-semibold uppercase tracking-wide">{t('Pickup')}</span>
+                                                                    <p className="font-bold text-gray-700 dark:text-slate-300">{order.pick_up_status || t('Unpicked-Up')}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -210,17 +220,18 @@ export default function OrdersPage() {
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-700 dark:text-slate-400">{t('Date')}</th>
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-700 dark:text-slate-400">{t('Total')}</th>
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-700 dark:text-slate-400">{t('Status')}</th>
+                                    <th className="px-6 py-4 text-sm font-semibold text-gray-700 dark:text-slate-400">{t('Pickup Status')}</th>
                                     <th className="px-6 py-4 text-sm font-semibold text-gray-700 dark:text-slate-400 text-right">{t('Actions')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 dark:divide-slate-800">
                                 {isLoading ? (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-10 text-center text-gray-500 dark:text-slate-500">{t('Loading orders...')}</td>
+                                        <td colSpan={7} className="px-6 py-10 text-center text-gray-500 dark:text-slate-500">{t('Loading orders...')}</td>
                                     </tr>
                                 ) : (orders?.length === 0) ? (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-10 text-center text-gray-500 dark:text-slate-500">{t('No orders found.')}</td>
+                                        <td colSpan={7} className="px-6 py-10 text-center text-gray-500 dark:text-slate-500">{t('No orders found.')}</td>
                                     </tr>
                                 ) : (
                                     (orders || []).map((order) => (
@@ -246,6 +257,14 @@ export default function OrdersPage() {
                                                     order.status === 'pending' || order.status === 'processing' ? 'badge-warning' : 'badge-danger'
                                                     }`}>
                                                     {t(order.status)}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full ${order.pick_up_status === 'Picked-Up'
+                                                    ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400'
+                                                    : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                                                    }`}>
+                                                    {order.pick_up_status || t('Unpicked-Up')}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 text-right">
