@@ -156,7 +156,7 @@ export default function OrdersPage() {
                                                         <p className="text-[10px] text-gray-400 dark:text-slate-500">{order.customer_email}</p>
                                                     </td>
                                                     <td className="px-4 py-3">
-                                                        <span className={`text-[10px] px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-slate-200' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
+                                                        <span className={`text-[10px] px-2 py-0.5 rounded-lg ${order.pick_up_status === 'Picked-Up' ? 'bg-gray-100 text-black dark:bg-slate-800 dark:text-black' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
                                                             {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}
                                                         </span>
                                                     </td>
@@ -263,7 +263,7 @@ export default function OrdersPage() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span className={`text-xs uppercase tracking-wider px-3 py-1 rounded-full ${order.pick_up_status === 'Picked-Up'
-                                                    ? 'bg-gray-100 text-gray-900 dark:bg-slate-800 dark:text-slate-200'
+                                                    ? 'bg-gray-100 text-black dark:bg-slate-800 dark:text-black'
                                                     : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'
                                                     }`}>
                                                     {order.pick_up_status === 'Unpicked-Up' ? t('Unpicked') : (order.pick_up_status || t('Unpicked'))}

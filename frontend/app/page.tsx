@@ -10,7 +10,7 @@ import {
 } from '@/components/dashboard/MetricCard';
 import SalesChart from '@/components/dashboard/SalesChart';
 import FeaturedProductsCarousel from '@/components/products/FeaturedProductsCarousel';
-import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Globe, CheckCircle2, Heart, Eye, Gem, Shield, Clock, ArrowRight } from 'lucide-react';
+import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Gem, ArrowRight } from 'lucide-react';
 import Shell from '@/components/layout/Shell';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
@@ -54,10 +54,18 @@ export default function DashboardPage() {
 
             setIsLoading(true);
             try {
-                // Ensure profile info is fresh (especially shop name)
-                const profileRes = await api.get('/auth/profile');
+                // Ensure profile info is fresh — pull both auth profile AND shop settings
+                // so the greeting shows the latest shop name set in Shop Profile
+                const [profileRes, shopRes] = await Promise.all([
+                    api.get('/auth/profile'),
+                    api.get('/sellers/shop-settings'),
+                ]);
                 if (profileRes.success || profileRes._id) {
                     const freshUser = profileRes.success ? profileRes.data : profileRes;
+                    // Prefer shop_name from ShopProfile (settings) as it's explicitly set by user
+                    if (shopRes.success && shopRes.data?.shop_name) {
+                        freshUser.shop_name = shopRes.data.shop_name;
+                    }
                     updateUser(freshUser);
                 }
 
@@ -131,153 +139,90 @@ export default function DashboardPage() {
                             </div>
                         </div>
 
-                        {/* Single Store Health Card */}
-                        <div className="relative animate-float-premium">
-                            <div className="glass-card !bg-white/98 dark:!bg-slate-900/98 border-white/50 dark:border-slate-800/50 p-7 w-76 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.13)] rotate-2 hover:rotate-0 transition-all duration-700 relative overflow-hidden group/card" style={{ width: '300px' }}>
-                                {/* Top accent bar */}
-                                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500"></div>
+                        {/* Compact Plan Card */}
+                        <div className="relative animate-float-premium shrink-0" style={{ width: '270px' }}>
+                            <div className="relative overflow-hidden rounded-[1.6rem] rotate-2 hover:rotate-0 transition-all duration-700 shadow-[0_25px_60px_rgba(0,0,0,0.25)]" style={{ background: 'linear-gradient(135deg, #6C63FF 0%, #9F7AEA 50%, #EC4899 100%)' }}>
+                                {/* Glass overlay */}
+                                <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
+                                {/* Glow orb */}
+                                <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
 
-                                {/* Subtle background glow */}
-                                <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-100/40 rounded-full blur-3xl"></div>
-
-                                <div className="relative z-10 text-left space-y-5">
-                                    {/* Header Row */}
-                                    <div className="flex justify-between items-center">
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl shadow-inner">
-                                                <Heart className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                <div className="relative z-10 p-5">
+                                    {/* Header */}
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="w-9 h-9 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center shadow-inner">
+                                                <Sparkles className="w-4 h-4 text-white" />
                                             </div>
-                                            <span className="text-sm font-black text-slate-800 dark:text-slate-100">Store Health</span>
+                                            <div>
+                                                <p className="text-[8px] font-black text-white/60 uppercase tracking-[0.18em]">Current Plan</p>
+                                                <p className="text-[10px] font-bold text-white/80">
+                                                    {stats.planName === 'Free Plan' ? 'Free subscription' : 'Premium subscription'}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <span className="text-[10px] font-black text-white px-3 py-1.5 bg-emerald-500 rounded-full tracking-wider shadow-md flex items-center gap-1">
-                                            <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse inline-block"></span>
+                                        <span className="text-[8px] font-black text-white bg-white/20 border border-white/30 px-2.5 py-1 rounded-full tracking-widest backdrop-blur-md">
                                             ACTIVE
                                         </span>
                                     </div>
 
-                                    {/* Score */}
-                                    <div>
-                                        <h4 className="text-[3.8rem] font-black text-slate-900 dark:text-slate-100 leading-none tracking-tighter">98%</h4>
-                                    </div>
-
-                                    {/* Progress Bar */}
-                                    <div>
-                                        <div className="flex justify-between text-[10px] font-bold text-slate-400 dark:text-slate-500 mb-1.5">
-                                            <span>Performance</span>
-                                            <span className="text-emerald-600 dark:text-emerald-400">Excellent</span>
-                                        </div>
-                                        <div className="h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
-                                            <div
-                                                className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)] transition-all duration-1000"
-                                                style={{ width: '98%' }}
-                                            ></div>
+                                    {/* Plan Icon */}
+                                    <div className="flex justify-center mb-3">
+                                        <div className="w-16 h-16 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.2)] border border-white/40">
+                                            <Gem className="w-8 h-8 text-white drop-shadow-lg" />
                                         </div>
                                     </div>
 
-                                    {/* Last Updated */}
-                                    <p className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold flex items-center gap-1.5">
-                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shadow-sm" />
-                                        Last Updated: <span className="text-slate-600 dark:text-slate-300 font-bold">Today</span>
-                                    </p>
+                                    {/* Plan Name */}
+                                    <h3 className="text-center text-lg font-black text-white tracking-tight mb-3 drop-shadow-sm">
+                                        {stats.planName || 'Free Plan'}
+                                    </h3>
 
-                                    {/* Show Detail Button — visible to all (admin can control via backend) */}
-                                    <button
-                                        onClick={() => { }}
-                                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-bold text-xs transition-all shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300 active:scale-95"
-                                    >
-                                        <Eye className="w-3.5 h-3.5" />
-                                        Show Detail
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Premium Current Plan Card Section */}
-                <section className="animate-slide-up stagger-1 px-4 sm:px-0">
-                    <div className="relative overflow-hidden group rounded-[2.5rem] bg-gradient-to-br from-[#6366f1] via-[#a855f7] to-[#ec4899] p-8 lg:p-12 shadow-[0_30px_60px_rgba(168,85,247,0.3)]">
-                        {/* Background Noise & Decorations */}
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
-                        <div className="absolute top-[-10%] left-[-10%] w-80 h-80 bg-white/10 rounded-full blur-3xl animate-float-slow"></div>
-                        <div className="absolute bottom-[-20%] right-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-float"></div>
-
-                        <div className="relative z-10 flex flex-col items-center max-w-xl mx-auto text-center space-y-10">
-                            {/* Header row */}
-                            <div className="w-full flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className="p-3 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-inner">
-                                        <Sparkles className="w-6 h-6 text-white" />
-                                    </div>
-                                    <div className="text-left">
-                                        <h4 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] leading-none">Current Plan</h4>
-                                        <p className="text-sm font-bold text-white mt-1">Premium subscription</p>
-                                    </div>
-                                </div>
-                                <span className="px-5 py-2 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white uppercase tracking-widest border border-white/30 shadow-lg">Active</span>
-                            </div>
-
-                            {/* Center Gem Illustration */}
-                            <div className="relative">
-                                <div className="w-48 h-48 bg-white/15 backdrop-blur-3xl rounded-full flex items-center justify-center p-4 border border-white/20 shadow-2xl animate-float-premium">
-                                    <div className="w-40 h-40 bg-white/10 rounded-full blur-xl absolute"></div>
-                                    <div className="p-8 bg-gradient-to-br from-blue-100 to-white rounded-full shadow-inner relative z-10">
-                                        <Gem className="w-16 h-16 text-blue-500 animate-pulse" />
-                                    </div>
-                                </div>
-                                {/* Floating particles */}
-                                <div className="absolute -top-4 -right-4 w-3 h-3 bg-yellow-300 rounded-full animate-ping"></div>
-                                <div className="absolute top-1/2 -left-8 w-2 h-2 bg-blue-300 rounded-full animate-float delay-100"></div>
-                            </div>
-
-                            {/* Plan Name & Features */}
-                            <div className="space-y-6">
-                                <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none italic drop-shadow-lg">
-                                    {stats.planName || 'Starter Merchant'}
-                                </h2>
-
-                                <div className="flex flex-wrap justify-center gap-3">
-                                    {(stats.planName === 'Professional Seller'
-                                        ? ['10k Limit', '20% Profit', '24/7 Support', 'Custom Branding']
-                                        : stats.planName === 'Enterprise Pro'
-                                            ? ['18k Limit', 'API Access', 'Global Logistics', 'Dedicated Manager']
-                                            : ['5000 Limit', 'Basic Analytics', 'Standard Rates', 'Community Support']
-                                    ).map((feat, i) => (
-                                        <span key={i} className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-xs font-black text-white uppercase tracking-wider flex items-center gap-2 group hover:bg-white hover:text-purple-600 transition-all cursor-default">
-                                            <Zap className="w-3 h-3 fill-current" />
-                                            {feat}
+                                    {/* Feature Badges */}
+                                    <div className="flex flex-wrap justify-center gap-1.5 mb-4">
+                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
+                                            ⚡ {stats.productLimit > 0 ? `${(stats.productLimit / 1000).toFixed(0)}K Limit` : 'No Limit'}
                                         </span>
-                                    ))}
-                                </div>
-                            </div>
+                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
+                                            📈 20% Profit
+                                        </span>
+                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
+                                            🛡️ 24/7 Support
+                                        </span>
+                                        <span className="text-[9px] font-bold text-white bg-white/15 border border-white/25 px-2 py-1 rounded-full backdrop-blur-sm">
+                                            📡 API Access
+                                        </span>
+                                    </div>
 
-                            {/* Upgrade Button */}
-                            <button
-                                onClick={() => router.push('/packages')}
-                                className="w-full sm:w-80 py-5 bg-white text-purple-700 text-lg font-black rounded-[2rem] shadow-[0_20px_40px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group"
-                            >
-                                Upgrade Level
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
-                            </button>
+                                    {/* Upgrade Button */}
+                                    <button
+                                        onClick={() => router.push('/packages')}
+                                        className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-white/95 hover:bg-white text-slate-800 rounded-xl font-black text-xs tracking-wide transition-all shadow-lg hover:shadow-xl active:scale-95"
+                                    >
+                                        Upgrade Level <ArrowRight className="w-3.5 h-3.5" />
+                                    </button>
 
-                            {/* Bottom Stats Row */}
-                            <div className="w-full pt-10 border-t border-white/10 grid grid-cols-3 gap-8">
-                                <div className="space-y-1">
-                                    <p className="text-2xl font-black text-white">{stats.totalProducts >= 1000 ? (stats.totalProducts / 1000).toFixed(1) + 'K' : stats.totalProducts}</p>
-                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Used</p>
-                                </div>
-                                <div className="space-y-1 border-x border-white/10 px-4">
-                                    <p className="text-2xl font-black text-white">{stats.remainingProducts >= 1000 ? (stats.remainingProducts / 1000).toFixed(1) + 'K' : stats.remainingProducts}</p>
-                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Remaining</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-2xl font-black text-white">30d</p>
-                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Expires</p>
+                                    {/* Stats Row */}
+                                    <div className="grid grid-cols-3 gap-1 mt-4 pt-3 border-t border-white/20 text-center">
+                                        <div>
+                                            <p className="text-sm font-black text-white leading-none">{stats.totalProducts > 999 ? `${(stats.totalProducts / 1000).toFixed(1)}K` : stats.totalProducts}</p>
+                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Used</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-black text-cyan-300 leading-none">{stats.remainingProducts > 999 ? `${(stats.remainingProducts / 1000).toFixed(1)}K` : stats.remainingProducts}</p>
+                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Remaining</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-black text-white leading-none">30d</p>
+                                            <p className="text-[8px] font-bold text-white/50 uppercase tracking-wide mt-0.5">Expires</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
 
                 {/* Main Stats Grid */}
                 <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 animate-slide-up stagger-1">
