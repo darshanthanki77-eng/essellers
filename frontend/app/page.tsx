@@ -10,7 +10,7 @@ import {
 } from '@/components/dashboard/MetricCard';
 import SalesChart from '@/components/dashboard/SalesChart';
 import FeaturedProductsCarousel from '@/components/products/FeaturedProductsCarousel';
-import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Globe, CheckCircle2, Heart, Eye } from 'lucide-react';
+import { TrendingUp, Package, Zap, Sparkles, Activity, ArrowUpRight, Globe, CheckCircle2, Heart, Eye, Gem, Shield, Clock, ArrowRight } from 'lucide-react';
 import Shell from '@/components/layout/Shell';
 import { useAuth } from '@/context/AuthContext';
 import { api } from '@/lib/api';
@@ -31,6 +31,10 @@ export default function DashboardPage() {
         lastMonthSales: 0,
         netProfit: 0,
         netProfitMargin: 0,
+        planName: 'Free Plan',
+        productLimit: 0,
+        totalProducts: 0,
+        remainingProducts: 0,
     });
 
     const [chartData] = useState<any[]>([]);
@@ -65,7 +69,10 @@ export default function DashboardPage() {
                         ...prev,
                         totalLifetimeSales: dbStats.totalSales || 0,
                         amountReceivables: dbStats.guaranteeMoney || 0,
-                        // Other stats can be added if backend supports them, otherwise default to 0
+                        planName: dbStats.planName || 'Free Plan',
+                        productLimit: dbStats.productLimit || 0,
+                        totalProducts: dbStats.totalProducts || 0,
+                        remainingProducts: dbStats.remainingProducts || 0,
                     }));
                 }
 
@@ -181,6 +188,91 @@ export default function DashboardPage() {
                                         <Eye className="w-3.5 h-3.5" />
                                         Show Detail
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Premium Current Plan Card Section */}
+                <section className="animate-slide-up stagger-1 px-4 sm:px-0">
+                    <div className="relative overflow-hidden group rounded-[2.5rem] bg-gradient-to-br from-[#6366f1] via-[#a855f7] to-[#ec4899] p-8 lg:p-12 shadow-[0_30px_60px_rgba(168,85,247,0.3)]">
+                        {/* Background Noise & Decorations */}
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+                        <div className="absolute top-[-10%] left-[-10%] w-80 h-80 bg-white/10 rounded-full blur-3xl animate-float-slow"></div>
+                        <div className="absolute bottom-[-20%] right-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-float"></div>
+
+                        <div className="relative z-10 flex flex-col items-center max-w-xl mx-auto text-center space-y-10">
+                            {/* Header row */}
+                            <div className="w-full flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 shadow-inner">
+                                        <Sparkles className="w-6 h-6 text-white" />
+                                    </div>
+                                    <div className="text-left">
+                                        <h4 className="text-[10px] font-black text-white/60 uppercase tracking-[0.2em] leading-none">Current Plan</h4>
+                                        <p className="text-sm font-bold text-white mt-1">Premium subscription</p>
+                                    </div>
+                                </div>
+                                <span className="px-5 py-2 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black text-white uppercase tracking-widest border border-white/30 shadow-lg">Active</span>
+                            </div>
+
+                            {/* Center Gem Illustration */}
+                            <div className="relative">
+                                <div className="w-48 h-48 bg-white/15 backdrop-blur-3xl rounded-full flex items-center justify-center p-4 border border-white/20 shadow-2xl animate-float-premium">
+                                    <div className="w-40 h-40 bg-white/10 rounded-full blur-xl absolute"></div>
+                                    <div className="p-8 bg-gradient-to-br from-blue-100 to-white rounded-full shadow-inner relative z-10">
+                                        <Gem className="w-16 h-16 text-blue-500 animate-pulse" />
+                                    </div>
+                                </div>
+                                {/* Floating particles */}
+                                <div className="absolute -top-4 -right-4 w-3 h-3 bg-yellow-300 rounded-full animate-ping"></div>
+                                <div className="absolute top-1/2 -left-8 w-2 h-2 bg-blue-300 rounded-full animate-float delay-100"></div>
+                            </div>
+
+                            {/* Plan Name & Features */}
+                            <div className="space-y-6">
+                                <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tighter leading-none italic drop-shadow-lg">
+                                    {stats.planName || 'Starter Merchant'}
+                                </h2>
+
+                                <div className="flex flex-wrap justify-center gap-3">
+                                    {(stats.planName === 'Professional Seller'
+                                        ? ['10k Limit', '20% Profit', '24/7 Support', 'Custom Branding']
+                                        : stats.planName === 'Enterprise Pro'
+                                            ? ['18k Limit', 'API Access', 'Global Logistics', 'Dedicated Manager']
+                                            : ['5000 Limit', 'Basic Analytics', 'Standard Rates', 'Community Support']
+                                    ).map((feat, i) => (
+                                        <span key={i} className="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-xs font-black text-white uppercase tracking-wider flex items-center gap-2 group hover:bg-white hover:text-purple-600 transition-all cursor-default">
+                                            <Zap className="w-3 h-3 fill-current" />
+                                            {feat}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Upgrade Button */}
+                            <button
+                                onClick={() => router.push('/packages')}
+                                className="w-full sm:w-80 py-5 bg-white text-purple-700 text-lg font-black rounded-[2rem] shadow-[0_20px_40px_rgba(255,255,255,0.2)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group"
+                            >
+                                Upgrade Level
+                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
+                            </button>
+
+                            {/* Bottom Stats Row */}
+                            <div className="w-full pt-10 border-t border-white/10 grid grid-cols-3 gap-8">
+                                <div className="space-y-1">
+                                    <p className="text-2xl font-black text-white">{stats.totalProducts >= 1000 ? (stats.totalProducts / 1000).toFixed(1) + 'K' : stats.totalProducts}</p>
+                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Used</p>
+                                </div>
+                                <div className="space-y-1 border-x border-white/10 px-4">
+                                    <p className="text-2xl font-black text-white">{stats.remainingProducts >= 1000 ? (stats.remainingProducts / 1000).toFixed(1) + 'K' : stats.remainingProducts}</p>
+                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Remaining</p>
+                                </div>
+                                <div className="space-y-1">
+                                    <p className="text-2xl font-black text-white">30d</p>
+                                    <p className="text-[10px] font-black text-white/50 uppercase tracking-widest leading-none">Expires</p>
                                 </div>
                             </div>
                         </div>
@@ -330,6 +422,23 @@ export default function DashboardPage() {
                     </div>
                 </footer>
             </div >
+
+            <style jsx global>{`
+                @keyframes float-premium {
+                    0%, 100% { transform: translateY(0) scale(1) rotate(0); }
+                    50% { transform: translateY(-15px) scale(1.02) rotate(2deg); }
+                }
+                .animate-float-premium {
+                    animation: float-premium 6s ease-in-out infinite;
+                }
+                @keyframes scale-in {
+                    0% { opacity: 0; transform: scale(0.95); }
+                    100% { opacity: 1; transform: scale(1); }
+                }
+                .animate-scale-in {
+                    animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+            `}</style>
         </Shell >
     );
 }

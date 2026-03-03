@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Shell from '@/components/layout/Shell';
-import { Search, Package, CheckCircle2, Loader2, Tag } from 'lucide-react';
+import { Search, Package, CheckCircle2, Loader2, Tag, Gem, Sparkles, ArrowRight, Zap } from 'lucide-react';
 import { api } from '@/lib/api';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -94,19 +94,53 @@ export default function ProductsPage() {
                         </button>
                     </div>
 
-                    {/* Plan Info */}
-                    <div className="glass-card p-8 flex flex-col items-center justify-center text-center !bg-white/60 dark:!bg-slate-900/60">
-                        <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-3xl flex items-center justify-center mb-6 shadow-sm">
-                            <CheckCircle2 className="w-10 h-10 text-blue-500 dark:text-blue-400" />
+                    {/* Redesigned Plan Info Card */}
+                    <div className="relative overflow-hidden group rounded-[2.5rem] bg-gradient-to-br from-[#6366f1] via-[#a855f7] to-[#ec4899] p-8 lg:p-10 shadow-2xl flex flex-col justify-between items-center text-center">
+                        {/* Background Noise & Decorations */}
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+                        <div className="absolute top-[-20%] left-[-20%] w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float-slow"></div>
+
+                        <div className="relative z-10 w-full space-y-6">
+                            <div className="flex justify-between items-center">
+                                <span className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-[8px] font-black text-white uppercase tracking-[0.2em] border border-white/30">Active Plan</span>
+                                <Sparkles className="w-4 h-4 text-white/60" />
+                            </div>
+
+                            <div className="relative flex justify-center py-4">
+                                <div className="w-32 h-32 bg-white/15 backdrop-blur-3xl rounded-full flex items-center justify-center border border-white/20 shadow-2xl animate-float-premium">
+                                    <div className="p-5 bg-gradient-to-br from-blue-100 to-white rounded-full shadow-inner relative z-10">
+                                        <Gem className="w-12 h-12 text-blue-500" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="space-y-1">
+                                <h3 className="text-3xl font-black text-white tracking-tighter italic drop-shadow-md">
+                                    {t(stats?.planName || 'Free Plan')}
+                                </h3>
+                                <div className="flex flex-wrap justify-center gap-2 mt-4">
+                                    {(stats?.planName === 'Professional Seller'
+                                        ? ['10k Limit', '24/7 Support']
+                                        : stats?.planName === 'Enterprise Pro'
+                                            ? ['18k Limit', 'API Access']
+                                            : ['5000 Limit', 'Analytics']
+                                    ).map((feat, i) => (
+                                        <span key={i} className="px-2.5 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-[9px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                                            <Zap className="w-2.5 h-2.5 fill-current" />
+                                            {feat}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => router.push('/packages')}
+                                className="mt-4 w-full py-4 bg-white text-purple-700 text-sm font-black rounded-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+                            >
+                                {t('Upgrade Level')}
+                                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </button>
                         </div>
-                        <h3 className="text-xl font-black text-gray-900 dark:text-slate-100 mb-2">{t('Current Package')}</h3>
-                        <p className="text-blue-600 dark:text-blue-400 font-extrabold text-2xl mb-8">{t(stats?.planName || 'Free Plan')}</p>
-                        <button
-                            onClick={() => router.push('/packages')}
-                            className="px-8 py-3 border-2 border-blue-500 dark:border-blue-400 text-blue-600 dark:text-blue-400 text-sm font-black rounded-2xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all active:scale-[0.98]"
-                        >
-                            {t('Upgrade Package')}
-                        </button>
                     </div>
                 </div>
 
@@ -281,6 +315,13 @@ export default function ProductsPage() {
             </div>
 
             <style jsx global>{`
+                @keyframes float-premium {
+                    0%, 100% { transform: translateY(0) rotate(0); }
+                    50% { transform: translateY(-10px) rotate(2deg); }
+                }
+                .animate-float-premium {
+                    animation: float-premium 5s ease-in-out infinite;
+                }
                 .glass-card {
                     background: white;
                     border: 1px solid #f1f5f9;
